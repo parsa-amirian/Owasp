@@ -6,10 +6,11 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 
-if (empty($_SESSION['username'])) {
+if (!isset($_SESSION['username'])) {
     header('Location: msg.php?msg=You are not logged in&type=error&goto=login.php');
     exit();
 } else {
+    var_dump($_SESSION)
 ?>
 <html lang="en">
 <head>

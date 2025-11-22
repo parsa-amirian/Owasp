@@ -52,7 +52,11 @@ if(isset($_POST['submit'])) {
         } else {
 
             // Success
-            $_SESSION['username'] = $username;
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['user-id'] = $user['id'];
+            $_SESSION['login'] = true;
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['name'] = $user['name'];
             $login_status = 1;
 
             // Log

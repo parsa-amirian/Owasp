@@ -1,0 +1,3 @@
+setTimeout(function () {
+                    window.location.href = '<?php echo $goto; ?>';
+                    }, 3000);

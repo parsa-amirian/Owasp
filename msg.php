@@ -34,10 +34,12 @@ else{
         <div class="container">
             <h1>Message</h1>
             <p class="message" style="color: <?php echo $color; ?>;"> <?php echo $msg; ?></p>
-            
+            <p class="muted"> Redirecting to <?php echo $goto; ?> In 3 Seconds...</p>
             <script>
+                const params = new URLSearchParams(window.location.search);
+                const goto = params.get("goto")
                 setTimeout(function () {
-                    window.location.href = '<?php echo $goto; ?>';
+                    window.location.href = goto || 'index.php ' ;
                     }, 3000);
             </script>
             
