@@ -33,17 +33,14 @@ else{
     <body>
         <div class="container">
             <h1>Message</h1>
-            <p class="message" style="color: <?php echo htmlspecialchars($color, ENT_QUOTES, 'UTF-8'); ?>;">
-                <?php echo htmlspecialchars($msg, ENT_QUOTES, 'UTF-8'); ?>
-            </p>
-            <?php if (!empty($goto)) : ?>
-                <p><a href="<?php echo htmlspecialchars($goto, ENT_QUOTES, 'UTF-8'); ?>">Continue</a></p>
-                <script>
-                    setTimeout(function () {
-                        window.location.href = '<?php echo htmlspecialchars($goto, ENT_QUOTES, 'UTF-8'); ?>';
+            <p class="message" style="color: <?php echo $color; ?>;"> <?php echo $msg; ?></p>
+            
+            <script>
+                setTimeout(function () {
+                    window.location.href = '<?php echo $goto; ?>';
                     }, 3000);
-                </script>
-            <?php endif; ?>
+            </script>
+            
         </div> 
 </body>
 </html>
