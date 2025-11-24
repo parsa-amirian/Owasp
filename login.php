@@ -53,11 +53,12 @@ if(isset($_POST['submit'])) {
 
             // Success
             $_SESSION['username'] = $user['username'];
-            $_SESSION['user-id'] = $user['id'];
-            $_SESSION['login'] = true;
-            $_SESSION['email'] = $user['email'];
-            $_SESSION['name'] = $user['name'];
-            $login_status = 1;
+            $_SESSION['userid'] = $user['id'];
+            //$_SESSION['login'] = true;
+           //
+           // $_SESSION['email'] = $user['email'];
+            //$_SESSION['name'] = $user['name'];
+            //$login_status = 1;
 
             // Log
             $ip_address = get_ip_address();

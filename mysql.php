@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // MySQL connection parameters
-$host = '192.168.1.102';
+$host = '10.0.0.10';
 $username = 'world';
 $password = '1234';
 $database = 'world';
