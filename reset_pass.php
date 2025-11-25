@@ -83,10 +83,10 @@ if (isset($_GET['token']) && !empty($_GET['token'])) {
     <main class="card">
         <h1>Reset Password</h1>
         <?php if ($show_error): ?>
-            <p style="color: red;"><?= htmlspecialchars($show_error) ?></p>
+            <p class="message message-error"><?= htmlspecialchars($show_error) ?></p>
             <p><a href="forget_pass.php">Try password reset again</a> or <a href="login.php">back to login</a>.</p>
         <?php elseif ($show_success): ?>
-            <p style="color: green;"><?= $show_success ?></p>
+            <p class="message message-success"><?= $show_success ?></p>
         <?php elseif ($show_form): ?>
             <form method="post" action="reset_pass.php" accept-charset="utf-8" novalidate>
                 <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>" />

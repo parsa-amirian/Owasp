@@ -33,10 +33,30 @@ if ($userid !== null) {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Panel</title>
     <link rel="stylesheet" href="statics/style.css" />
+<?php
+//// LOG OUT
+if (isset($_GET['action']) && $_GET['action'] === 'logout') {
+    // Destroy the session
+    session_unset();
+    session_destroy();
+
+    // Redirect to msg.php with logout message
+    header('Location: msg.php?msg=You have been logged out&type=success&goto=login.php');
+    exit();
+}
+?>
 </head>
 <body class="panel-body">
     <div class="panel-wrapper">
         <header class="panel-header">
+            <div class="panel-logout-container">
+                <form method="get" action="" class="panel-logout-form">
+                    <button type="submit" name="action" value="logout" class="logout-btn" aria-label="Log out of your account">
+                        <svg class="logout-btn-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M15.75 16.25a.75.75 0 0 1 0 1.06l-1.44 1.44a5 5 0 1 1 0-7.08l1.44 1.44a.75.75 0 0 1-1.06 1.06l-1.44-1.44a3.5 3.5 0 1 0 0 4.96l1.44-1.44a.75.75 0 0 1 1.06 0Z"/><path fill="currentColor" d="M8.22 15.53a.75.75 0 0 1 0-1.06L10.94 12 8.22 9.53a.75.75 0 1 1 1.06-1.06l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0Z"/></svg>
+                        Log out
+                    </button>
+                </form>
+            </div>
             <p class="panel-badge">Account Center</p>
             <h1>Manage your profile</h1>
             <p class="muted">Signed in as <?php echo htmlspecialchars($userData['email']); ?></p>

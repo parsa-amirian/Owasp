@@ -37,6 +37,24 @@ p {
     line-height: 1.5;
 }
 
+.muted {
+    color: #666;
+}
+
+.message {
+    margin-top: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.message-error {
+    color: #dc2626;
+}
+
+.message-success {
+    color: #16a34a;
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -325,6 +343,52 @@ body.panel-body {
     margin: 0;
 }
 
+.panel-logout-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 1.5em;
+}
+
+.panel-logout-form {
+    margin: 0;
+}
+
+.logout-btn {
+    background: linear-gradient(90deg, #f85032 0%, #e73827 100%);
+    color: #fff;
+    border: none;
+    padding: 0.6em 1.8em;
+    font-size: 1.05em;
+    border-radius: 50px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+    box-shadow: 0 2px 8px rgba(220, 80, 80, 0.09);
+    outline: none;
+}
+
+.logout-btn:hover,
+.logout-btn:focus {
+    background: linear-gradient(90deg, #e73827 0%, #b71517 100%);
+    color: #fff;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 16px rgba(220, 80, 80, 0.14);
+}
+
+.logout-btn:active {
+    background: linear-gradient(90deg, #f85032 0%, #e73827 100%);
+    box-shadow: 0 1.5px 4px rgba(220, 80, 80, 0.08);
+    transform: none;
+}
+
+.logout-btn-icon {
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
 @media (max-width: 640px) {
     body.panel-body {
         padding: 1.25rem;
@@ -333,5 +397,15 @@ body.panel-body {
     .panel-card-header {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .panel-logout-container {
+        justify-content: center;
+        margin-top: 1em;
+    }
+
+    .logout-btn {
+        width: 100%;
+        padding: 0.8em 0;
     }
 }

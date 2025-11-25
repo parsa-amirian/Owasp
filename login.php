@@ -103,7 +103,7 @@ if(isset($_POST['submit'])) {
             </div>
         </form>
         <?php if(isset($msg) && !empty($msg)): ?>
-        <p class="message" style="color:red;"><?php echo htmlspecialchars($msg); ?></p>
+        <p class="message message-error"><?php echo htmlspecialchars($msg); ?></p>
         <?php endif; ?>
         <p class="note">Don't have an account? <a href="register.php">Register here</a>.</p>
     </main>
