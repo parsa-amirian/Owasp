@@ -100,6 +100,7 @@ if(isset($_POST['submit'])) {
             </div>
             <div class="actions">
                 <button type="submit" name="submit">Login</button>
+                <a class="button button-secondary" href="forget_pass.php">Forgot password?</a>
             </div>
         </form>
         <?php if(isset($msg) && !empty($msg)): ?>
