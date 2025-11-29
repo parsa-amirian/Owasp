@@ -83,6 +83,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                     <?php if (!empty($userBio)): ?>
                     <p class="panel-bio"><?php echo nl2br(htmlspecialchars($userBio)); ?></p>
                     <?php endif; ?>
+                    <p class="panel-public-link">
+                        <a href="profile.php?user_id=<?php echo urlencode($userid); ?>" target="_blank" rel="noopener noreferrer">
+                            View public profile
+                        </a>
+                    </p>
                 </div>
             </div>
         </header>
