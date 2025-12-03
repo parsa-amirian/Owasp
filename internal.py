@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 def get_db_connection():
     return pymysql.connect(
-        host=os.getenv("WORLD_DB_HOST", "192.168.50.189"),
+        host=os.getenv("WORLD_DB_HOST", "10.0.0.10"),
         user=os.getenv("WORLD_DB_USER", "world"),
         password=os.getenv("WORLD_DB_PASSWORD", "1234"),
         database=os.getenv("WORLD_DB_NAME", "world"),
