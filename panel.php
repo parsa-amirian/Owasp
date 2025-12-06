@@ -51,6 +51,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     // Destroy the session
     session_unset();
     session_destroy();
+    session_regenerate_id(true);
 
     // Redirect to msg.php with logout message
     header('Location: msg.php?msg=You have been logged out&type=success&goto=login.php');

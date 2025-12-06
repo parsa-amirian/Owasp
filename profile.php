@@ -14,7 +14,7 @@
 $tweets = [];
 
 if ($conn) {
-    $tweetsStmt = $conn->prepare("SELECT content, created_at FROM tweets WHERE user_id = ? ORDER BY created_at DESC");
+    $tweetsStmt = $conn->prepare("SELECT id, content, created_at FROM tweets WHERE user_id = ? ORDER BY created_at DESC");
     if ($tweetsStmt) {
         $tweetsStmt->bind_param("i", $userid);
         if ($tweetsStmt->execute()) {
@@ -99,13 +99,14 @@ if ($conn) {
         <?php endif; ?>
 
         <div class="profile-tweets">
-            <h2>Tweets</h2>
+            <h2>Recent Tweets</h2>
             <?php if (!empty($tweets)): ?>
                 <ul>
                     <?php foreach ($tweets as $tweet): ?>
                         <li>
-                            <p><?php echo nl2br(htmlspecialchars($tweet['content'])); ?></p>
+                            <p><?php echo nl2br(htmlspecialchars(urldecode($tweet['content']))); ?></p>
                             <small><?php echo htmlspecialchars($tweet['created_at']); ?></small>
+                            <a href="delete.php?post_id=<?php echo htmlspecialchars($tweet['id']); ?>" class="delete-button">Delete</a>
                         </li>
                     <?php endforeach; ?>
                 </ul>

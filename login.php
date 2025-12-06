@@ -54,7 +54,7 @@ if(isset($_POST['submit'])) {
             // Success
             $_SESSION['username'] = $user['username'];
             $_SESSION['userid'] = $user['id'];
-            //$_SESSION['login'] = true;
+           $_SESSION['login'] = true;
            //
            // $_SESSION['email'] = $user['email'];
             //$_SESSION['name'] = $user['name'];
