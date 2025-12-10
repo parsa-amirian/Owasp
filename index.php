@@ -63,7 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-$tweetsSql = "SELECT t.user_id, t.content, t.created_at, u.username, u.profile_picture FROM tweets t LEFT JOIN users u ON t.user_id = u.id ORDER BY t.created_at DESC";
+$tweetsSql = "SELECT t.user_id, t.content, t.created_at, u.username, 
+u.profile_picture FROM tweets t LEFT JOIN users u ON t.user_id = u.id ORDER BY t.created_at DESC";
 $tweetsResult = $conn->query($tweetsSql);
 if ($tweetsResult) {
     while ($tweetRow = $tweetsResult->fetch_assoc()) {
