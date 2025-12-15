@@ -28,7 +28,7 @@ if ($conn) {
 
  //call the internal.py api to get the user data
  // Fetch the user data from the internal API and print the JSON response
- $apiUrl = "http://10.0.0.10:5000/api/user/" . urlencode($userid);
+ $apiUrl = "http://" . $Ip . ":5000/api/user/" . urlencode($userid);
  $apiResponse = @file_get_contents($apiUrl);
 
  if ($apiResponse === FALSE) {

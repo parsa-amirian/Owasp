@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+/* Load tweets from database
 $tweetsSql = "SELECT t.user_id, t.content, t.created_at, u.username, 
 u.profile_picture FROM tweets t LEFT JOIN users u ON t.user_id = u.id ORDER BY t.created_at DESC";
 $tweetsResult = $conn->query($tweetsSql);
@@ -74,6 +75,7 @@ if ($tweetsResult) {
 } else {
     $tweetFetchError = 'Unable to load tweets right now.';
 }
+    */
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -117,7 +119,7 @@ if ($tweetsResult) {
                     <textarea id="tweet_content" name="tweet_content" rows="4" maxlength="280" required></textarea>
                 </div>
                 <div class="actions">
-                    <button type="submit">Post Tweet</button>
+                    <button id="tweet_submit_button" type="button" name="tweet-submit" >Post Tweet</button>
                 </div>
             </form>
             <?php if (!empty($tweetMessage)): ?>
@@ -129,42 +131,137 @@ if ($tweetsResult) {
 
         <section class="tweet-feed">
             <h2>Latest Tweets</h2>
-            <?php if (!empty($tweetFetchError)): ?>
-                <p class="message message-error"><?php echo htmlspecialchars($tweetFetchError); ?></p>
-            <?php elseif (empty($allTweets)): ?>
-                <p class="muted">No tweets have been posted yet.</p>
-            <?php else: ?>
-                <ul class="tweet-list">
-                    <?php foreach ($allTweets as $tweet): ?>
-                        <li class="tweet-item">
-                            <div class="tweet-avatar">
-                                <?php
-                                    $tweetProfile = $tweet['profile_picture'] ?? 'statics/default-avatar.svg';
-                                    $sanitizedTweetProfile = basename($tweetProfile);
-                                    $tweetRelativePath = 'uploads/' . $sanitizedTweetProfile;
-                                    $tweetAbsolutePath = __DIR__ . '/' . $tweetRelativePath;
-                                    if (empty($tweet['profile_picture']) || !is_file($tweetAbsolutePath)) {
-                                        $tweetRelativePath = 'statics/default-avatar.svg';
-                                    }
-                                ?>
-                                <img src="<?php echo htmlspecialchars($tweetRelativePath); ?>" alt="Profile Picture">
-                            </div>
-                            <div class="tweet-content-wrap">
-                                <p class="tweet-meta">
-                                    <a href="profile.php?user_id=<?php echo htmlspecialchars($tweet['user_id']); ?>">
-                                        <strong><?php echo htmlspecialchars($tweet['username'] ?? 'Unknown'); ?></strong>
-                                    </a>
-                                    <span><?php echo htmlspecialchars($tweet['created_at'] ?? ''); ?></span>
-                                </p>
-                                <p class="tweet-content">
-                                    <?php echo nl2br(htmlspecialchars(urldecode($tweet['content']))); ?>
-                                </p>
-                            </div>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
+            <p id="tweet-status" class="muted">Loading tweets...</p>
+            <ul class="tweet-list" id="tweet-list"></ul>
         </section>
     </main>
 </body>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function()
+    {
+        window.addEventListener('message', function(event) 
+        {    
+            console.log('Recived postMessage:', event.data);
+        });
+
+        (function() {
+        const tweetStatus = document.getElementById('tweet-status');
+        const tweetList = document.getElementById('tweet-list');
+        let data = [];
+
+        const escapeHtml = (value) => {
+            const div = document.createElement('div');
+            div.textContent = value ?? '';
+            return div.innerHTML;
+        };
+
+        const renderTweets = (tweets) => {
+            tweetList.innerHTML = '';
+            if (!tweets || tweets.length === 0) {
+                tweetStatus.textContent = 'No tweets have been posted yet.';
+                tweetStatus.className = 'muted';
+                return;
+            }
+
+            tweetStatus.textContent = '';
+            tweetStatus.className = '';
+
+            tweets.forEach((tweet) => {
+                const li = document.createElement('li');
+                li.className = 'tweet-item';
+
+                const avatarWrap = document.createElement('div');
+                avatarWrap.className = 'tweet-avatar';
+                const img = document.createElement('img');
+                img.src = tweet.profile_picture_url || 'statics/default-avatar.svg';
+                img.alt = 'Profile Picture';
+                avatarWrap.appendChild(img);
+
+                const contentWrap = document.createElement('div');
+                contentWrap.className = 'tweet-content-wrap';
+
+                const meta = document.createElement('p');
+                meta.className = 'tweet-meta';
+
+                const userLink = document.createElement('a');
+                userLink.href = 'profile.php?user_id=' + encodeURIComponent(tweet.user_id);
+                userLink.innerHTML = '<strong>' + escapeHtml(tweet.username || 'Unknown') + '</strong>';
+
+                const created = document.createElement('span');
+                created.textContent = tweet.created_at || '';
+
+                meta.appendChild(userLink);
+                meta.appendChild(created);
+
+                const content = document.createElement('p');
+                content.className = 'tweet-content';
+                const safeContent = escapeHtml(tweet.content || '').replace(/\n/g, '<br>');
+                content.innerHTML = safeContent;
+
+                contentWrap.appendChild(meta);
+                contentWrap.appendChild(content);
+
+                li.appendChild(avatarWrap);
+                li.appendChild(contentWrap);
+
+                tweetList.appendChild(li);
+            });
+        };
+        document.getElementById('tweet_submit_button').addEventListener('click', function()
+        {
+        //alert('submitTweet');
+        document.getElementById('tweet_submit_button').disable = true;
+        document.getElementById('tweet_submit_button').innerHTML = "Submiting...";
+        const tweetContent = document.getElementById('tweet_content').value;
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'tweets.php', true);
+        xhr.setRequestHeader('content-type', "application/JSON");
+        xhr.send(JSON.stringify({tweet_content: tweetContent}));
+        xhr.onreadystatechange = function()
+        {
+            if(xhr.readyState ===4 )
+            {
+                //alert("Tweet Submit succesfully");
+                setTimeout(function()
+                {
+                    document.getElementById('tweet_submit_button').disabled = false;
+                    var btn = document.getElementById('tweet_submit_button');
+                    if(btn && btn.parentNode)
+                    {
+                        btn.parentNode.removeChild(btn);
+                    }
+                    location.reload(1);
+                }, 2000);
+            }
+        };
+        });
+
+
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'tweets.php', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        data = JSON.parse(xhr.responseText);
+                        renderTweets(data);
+                    } catch (error) {
+                        tweetStatus.textContent = 'Unable to load tweets right now.';
+                        tweetStatus.className = 'message message-error';
+                    }
+
+                        window.postMessage(data, '*');
+
+                } else {
+                    tweetStatus.textContent = 'Unable to load tweets right now.';
+                    tweetStatus.className = 'message message-error';
+                }
+            }
+        };
+        xhr.send();
+        })();
+    });
+</script>
 </html>

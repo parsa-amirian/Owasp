@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 import os
 from contextlib import closing
+from pathlib import Path
 
 import pymysql
 import pymysql.cursors
@@ -10,9 +12,23 @@ from flask import Flask, jsonify, make_response
 app = Flask(__name__)
 
 
+def load_config():
+    """Load configuration from shared config.json file."""
+    config_path = Path(__file__).parent / "config.json"
+    try:
+        with open(config_path, "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {"ip": "192.168.1.101"}
+
+
+_config = load_config()
+
+
 def get_db_connection():
+    db_host = os.getenv("WORLD_DB_HOST", _config.get("ip", "192.168.1.101"))
     return pymysql.connect(
-        host=os.getenv("WORLD_DB_HOST", "10.0.0.10"),
+        host=db_host,
         user=os.getenv("WORLD_DB_USER", "world"),
         password=os.getenv("WORLD_DB_PASSWORD", "1234"),
         database=os.getenv("WORLD_DB_NAME", "world"),
